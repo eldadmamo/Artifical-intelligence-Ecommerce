@@ -1,0 +1,92 @@
+eldad@DESKTOP-LQHR6GO:~/projects/flutterproject$ sudo -u postgres psql
+psql (16.13 (Ubuntu 16.13-0ubuntu0.24.04.1))
+Type "help" for help.
+
+postgres=# CREATE USER fashionuser WITH PASSWORD 'eldad';
+ANT ALL PRIVILEGES ON DATABASE fashion_ecommerce_course TO fashionuser;
+\qCREATE ROLE
+postgres=# GRANT ALL PRIVILEGES ON DATABASE fashion_ecommerce_course TO fashionuser;
+GRANT
+postgres=# CREATE USER fashionuser WITH PASSWORD 'eldad';
+ERROR:  role "fashionuser" already exists
+postgres=# GRANT ALL PRIVILEGES ON DATABASE fashion_ecommerce_course TO fashionuser;
+GRANT
+postgres=# \q
+eldad@DESKTOP-LQHR6GO:~/projects/flutterproject$ sudo -u postgres psql
+psql (16.13 (Ubuntu 16.13-0ubuntu0.24.04.1))
+Type "help" for help.
+
+postgres=# ALTER USER postgres WITH PASSWORD '123456';
+ALTER ROLE
+postgres=# \q
+eldad@DESKTOP-LQHR6GO:~/projects/flutterproject$ sudo -u postgres psql
+psql (16.13 (Ubuntu 16.13-0ubuntu0.24.04.1))
+Type "help" for help.
+
+postgres=# ALTER ROLE fashionuser SET client_encoding TO 'utf8';
+ALTER ROLE
+postgres=# ALTER ROLE fashionuser SET default_transation_isolation TO 'read committed';
+ERROR:  unrecognized configuration parameter "default_transation_isolation"
+postgres=# ALTER ROLE fashionuser SET default_transaction_isolation TO 'read committed';
+ALTER ROLE
+postgres=# ALTER ROLE fashionuser SET timezone TO 'Africa/Nairobi';
+ALTER ROLE
+postgres=# GRANT ALL PREVILEGES ON DATABASE fashion_ecommerce_course TO fashionuser;
+ERROR:  syntax error at or near "PREVILEGES"
+LINE 1: GRANT ALL PREVILEGES ON DATABASE fashion_ecommerce_course TO...
+                  ^
+postgres=# GRANT ALL PRIVILEGES ON DATABASE fashion_ecommerce_course TO fashionuser;
+GRANT
+postgres=# \q
+eldad@DESKTOP-LQHR6GO:~/projects/flutterproject$ sudo -u postgres psql -d fashion_ecommerce_course
+psql (16.13 (Ubuntu 16.13-0ubuntu0.24.04.1))
+Type "help" for help.
+
+fashion_ecommerce_course=# ALTER SCHEMA public OWNER TO fashionuser;
+ALTER SCHEMA
+fashion_ecommerce_course=# GRANT ALL ON SCHEMA public to fashionuser;
+GRANT
+fashion_ecommerce_course=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO fashionuser;
+GRANT
+fashion_ecommerce_course=# GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO fashionuser;
+GRANT
+fashion_ecommerce_course=# \q
+
+
+eldad@DESKTOP-LQHR6GO:~/projects/flutterproject/backend$ source fashionenv/bin/activate
+
+(fashionenv) eldad@DESKTOP-LQHR6GO:~/projects/flutterproject/backend$ pip install django
+Collecting django
+  Downloading django-6.0.3-py3-none-any.whl.metadata (3.9 kB)
+Collecting asgiref>=3.9.1 (from django)
+  Downloading asgiref-3.11.1-py3-none-any.whl.metadata (9.3 kB)
+Collecting sqlparse>=0.5.0 (from django)
+  Downloading sqlparse-0.5.5-py3-none-any.whl.metadata (4.7 kB)
+Downloading django-6.0.3-py3-none-any.whl (8.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.4/8.4 MB 790.6 kB/s eta 0:00:00
+Downloading asgiref-3.11.1-py3-none-any.whl (24 kB)
+Downloading sqlparse-0.5.5-py3-none-any.whl (46 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.1/46.1 kB 983.9 kB/s eta 0:00:00
+Installing collected packages: sqlparse, asgiref, django
+Successfully installed asgiref-3.11.1 django-6.0.3 sqlparse-0.5.5
+(fashionenv) eldad@DESKTOP-LQHR6GO:~/projects/flutterproject/backend$ django-admin startproject config .
+(fashionenv) eldad@DESKTOP-LQHR6GO:~/projects/flutterproject/backend$ ls
+config  fashionenv  manage.py
+(fashionenv) eldad@DESKTOP-LQHR6GO:~/projects/flutterproject/backend$ python manage.py startapp accounts
+(fashionenv) eldad@DESKTOP-LQHR6GO:~/projects/flutterproject/backend$ pip install djangorestframework djangorestframework-simplejwt
+Collecting djangorestframework
+  Downloading djangorestframework-3.17.1-py3-none-any.whl.metadata (7.9 kB)
+Collecting djangorestframework-simplejwt
+  Downloading djangorestframework_simplejwt-5.5.1-py3-none-any.whl.metadata (4.6 kB)
+Requirement already satisfied: django>=4.2 in ./fashionenv/lib/python3.12/site-packages (from djangorestframework) (6.0.3)
+Collecting pyjwt>=1.7.1 (from djangorestframework-simplejwt)
+  Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+Requirement already satisfied: asgiref>=3.9.1 in ./fashionenv/lib/python3.12/site-packages (from django>=4.2->djangorestframework) (3.11.1)
+Requirement already satisfied: sqlparse>=0.5.0 in ./fashionenv/lib/python3.12/site-packages (from django>=4.2->djangorestframework) (0.5.5)
+Downloading djangorestframework-3.17.1-py3-none-any.whl (898 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 898.8/898.8 kB 2.5 MB/s eta 0:00:00
+Downloading djangorestframework_simplejwt-5.5.1-py3-none-any.whl (107 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 107.7/107.7 kB 4.2 MB/s eta 0:00:00
+Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+Installing collected packages: pyjwt, djangorestframework, djangorestframework-simplejwt
+Successfully installed djangorestframework-3.17.1 djangorestframework-simplejwt-5.5.1 pyjwt-2.12.1
