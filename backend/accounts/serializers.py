@@ -8,7 +8,7 @@ class UserSeralizer(serializers.ModelSerializer):
         fields = ['id', 'email', 'phone', 'date_joined']
         read_only_fields = ['id', 'date_joined']
     
-class UserRegistrationSerialize(serializers.Serializer):
+class UserRegistrationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only= True, min_length = 8)
     phone = serializers.CharField(required = False, allow_blank= True) 
