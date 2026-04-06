@@ -21,3 +21,26 @@ class AccountServices:
         profile.fcm_token = fcm_token 
         profile.save(update_fields = ['fcm_token'])
         return profile 
+    
+    @staticmethod
+    def get_user_addresses(user):
+        return Address.objects.filter(user = user).order_by("-is_default", 
+        "-created_at")
+    
+    @staticmethod 
+    def create_address(user, **kwargs):
+        address = Address.objects.create(user = user, **kwargs)
+        return address
+    
+    @staticmethod
+    def get_address(user, address_id):
+        return Address.objects.get(id = address_id, user = user)
+    
+    @staticmethod
+    @transaction.atomic
+    def update_address(user, address_id, **kwargs):
+        address = Address.objects.get(id = address_id, user = user)
+        for field, value in kwargs.items():
+            if  hasattr(address, field):
+                setattr(address, field, value)
+                

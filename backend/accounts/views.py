@@ -96,3 +96,40 @@ def update_fcm_token(request):
     AccountServices.update_fcm_token(request.user, fcm_token)
     return Response({"message": "FCM token updated successfully"})
 
+@api_view(["GET", "POST"])
+@permission_classes([IsAutheicated])
+def addresses(request):
+    if request.method == 'GET':
+        addresses = AccountServices.get_user_addresses(request.user)
+        return Response(AddressSerializers(addresses, many = True).data)
+    elif request.method == 'POST':
+        seralizer = AddressSerializers(data = request.data)
+
+        if serializer.is_valid():
+            address = AccountServices.create_address(
+                request.user, **serializer.validated_data
+            )
+
+            return Response(
+                AddressSerializers(address).data, status=status.HTTP_200_CREATED
+            )
+        
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+@permission_classes([IsAutheicated])
+def address_detail(request, address_id):
+    try:
+        if request.method == 'GET':
+            address = AccountServices.get_address(request.user)
+            return Response(AddressSerializers(addresses, many = True).data)
+        elif request.method in ['PUT','PATCH']:
+            serializer = AddressSerializers(data = request.data, partial = (request.method == 'PATCH'))
+
+            if serializer.is_valid():
+                address = AccountServices.update_address(request.user, address_id, **serializer.validated_data)
+                return Response(AddressSerializers(address).data)
+            
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        
+
