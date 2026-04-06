@@ -58,4 +58,34 @@ class Profile(models.Model):
         ('xl', 'Extra Large'),
         ('xxl', '2x Large'),
     ]
-    
+
+    SIZE_SYSTEM_CHOICES = [
+        ('US', 'US'),
+        ('EU', 'EU'),
+        ('UK', 'UK'),
+    ]
+
+    CURRENCY_CHOICES = [
+        ('KSH', 'KSH'),
+        ('USD', '$ USD'),
+        ('EUR', 'EURO'),
+        ('VND', 'VND'),
+        ('RUB', 'RUB'),
+        ('ETB', 'ETB'),
+    ]
+    LANGUAGE_CHOICES = [
+        ('en', 'English'),
+        ('fr', 'France'),
+        ('ru', 'PycckNN'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'profile')
+    avatar = models.ImageField(upload_to='avatars/', null = True, blank = True)
+    name = models.CharField(max_length=100, blank=True, default='')
+    gender = models.CharField(max_length=10, choices= GENDER_CHOICES, null = True, blank= True)
+    preferred_size = models.CharField(max_length=5, choices=SIZE_CHOICES),
+    size_system = models.CharField(max_length=2, choices=SIZE_SYSTEM_CHOICES, default='US')
+    language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default= 'en')
+    currency = models.CharField(max_length=3, choices = CURRENCY_CHOICES, default='KSH')
+    country = models.CharField(max_length=100, default='Ethiopia')
+
