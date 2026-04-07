@@ -43,4 +43,22 @@ class AccountServices:
         for field, value in kwargs.items():
             if  hasattr(address, field):
                 setattr(address, field, value)
-                
+        address.save()
+        return address
+    
+    @staticmethod
+    def delete_address(user, address_id):
+        address = Address.objects.get(id = address_id, user = user)
+        address.delete()
+
+    @staticmethod
+    @transaction.atomic 
+    def set_default_address(user, address_id):
+        address = Address.objects.get(id = address_id, user = user)
+        Address.objects.filter(user = user, is_default = True).update (
+            is_default = False
+        )
+        address.is_default = True 
+        address.save() 
+
+        return address

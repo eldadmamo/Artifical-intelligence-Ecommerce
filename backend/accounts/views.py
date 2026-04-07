@@ -131,5 +131,18 @@ def address_detail(request, address_id):
                 return Response(AddressSerializers(address).data)
             
             return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-        
+        elif request.method == 'DELETE':
+            AccountServices.delete_address(request.user, address_id)
+            return Response(status = status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        return Response({'error': str(e)}, status = status.HTTP_404_NOT_FOUND)
+    
+@api_view(["POST"])
+@permission_classes([IsAutheicated])
+def set_default_address(request, address_id):
+    try:
+        address = AccountServices.set_default_address(request.user, address_id)
+        return Response(AddressSerializers(address).data)
+    except Exception as e:
+        return Response({"error": str(e)}, status = status.HTTP_401_NOT_FOUND)
 
